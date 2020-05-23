@@ -99,12 +99,13 @@
           </q-list>
         </q-scroll-area>
 
-        <q-img class="absolute-top" src="statics/road.jpg" style="height: 168px">
+        <q-img class="absolute-top" src="statics/road.png" style="height: 168px;">
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img :src="pic_url">
+              <img :src="usr_img">
             </q-avatar>
-            <div class="text-weight-bold">{{ name }}</div>
+            <div class="text-weight-bold">{{ usr_name }}</div>
+            <div class="text-weight-light">Points: {{ usr_points }}</div>
           </div>
         </q-img>
       </q-drawer>
@@ -119,11 +120,18 @@
 
 <script>
 import { date } from 'quasar'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'MainLayout',
 
   computed: {
+    ...mapActions('user_info', [
+      'clearData'
+    ]),
+    ...mapGetters('user_info', [
+      'usr_name', 'usr_points', 'usr_img'
+    ]),
     todaysDate() {
       let timeStamp = Date.now()
       return date.formatDate(timeStamp, 'dddd D MMMM')
@@ -134,7 +142,7 @@ export default {
     logout(e, go) {
       e.navigate = false;
       // clear user info from state and clear the session
-      this.clearUserData;
+      this.clearData;
       sessionStorage.clear();
       go();
     }
