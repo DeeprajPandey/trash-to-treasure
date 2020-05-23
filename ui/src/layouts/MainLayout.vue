@@ -130,6 +130,16 @@ export default {
     }
   },
 
+  methods: {
+    logout(e, go) {
+      e.navigate = false;
+      // clear user info from state and clear the session
+      this.clearUserData;
+      sessionStorage.clear();
+      go();
+    }
+  },
+
   data () {
     return {
       leftDrawerOpen: false
