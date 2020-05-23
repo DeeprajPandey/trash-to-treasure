@@ -16,6 +16,9 @@ const mutations = {
     state.points = payload_obj.points;
     state.pic_url = payload_obj.pic_url;
   },
+  POINTS(state, payload_pts) {
+    state.points = payload_pts;
+  },
   DELETE(state) {
     Object.assign(state, defaultState());
   }
@@ -24,6 +27,9 @@ const mutations = {
 const actions = {
   setData({ commit }, user_obj) {
     commit('INIT', user_obj);
+  },
+  setPoint({ commit }, points) {
+    commit('POINTS', points);
   },
   clearData({ commit }) {
     commit('DELETE');
