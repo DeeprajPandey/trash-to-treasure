@@ -10,11 +10,14 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueGoogleMaps, {
   load: {
+    libraries: ['places', 'geometry'],
     key: 'AIzaSyAlevwra91uaz9vkB91voTT84NU_fXD9Fg'
   },
   installComponents: false
 })
 Vue.component('google-map', VueGoogleMaps.Map);
+Vue.component('google-marker', VueGoogleMaps.Marker);
+Vue.component('google', VueGoogleMaps.gmapApi);
 
 import routes from './routes'
 
