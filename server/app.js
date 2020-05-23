@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const session = require("express-session");
+const history = require('connect-history-api-fallback');
 const logger = require("morgan");
 
 const config = require("./config");
@@ -28,6 +29,9 @@ app.use(function(req, res, next) {
 
 // For production
 // app.use(express.static(staticRoot));
+// app.use(history({
+//   index: '/'
+// }));
 // app.get("/", (req, res, next) => {
 //     res.sendFile("index.html", { root: staticRoot });
 // });
