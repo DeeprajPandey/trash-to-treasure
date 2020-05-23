@@ -1,6 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import VueGeolocation from 'vue-browser-geolocation'
+
+Vue.config.productionTip = false
+Vue.use(VueGeolocation)
+
+import * as VueGoogleMaps from 'vue2-google-maps'
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyAlevwra91uaz9vkB91voTT84NU_fXD9Fg'
+  },
+  installComponents: false
+})
+Vue.component('google-map', VueGoogleMaps.Map);
+
 import routes from './routes'
 
 Vue.use(VueRouter)
