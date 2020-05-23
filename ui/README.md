@@ -3,8 +3,6 @@
 An application that promotes and incentivises sustainable practices like recycling.
 
 ---
-##How to run the app
-Bellow we will give steps on how to run the application
 
 ## Install the dependencies
 ```bash
