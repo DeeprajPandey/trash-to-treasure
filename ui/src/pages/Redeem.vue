@@ -5,10 +5,10 @@
         <q-item>
           <q-item-section>
             <q-item-label>Amazon Gift Card</q-item-label>
-            <q-item-label caption>$25</q-item-label>
+            <q-item-label caption>$50</q-item-label>
           </q-item-section>
         </q-item>
-        <q-img src="https://66.media.tumblr.com/e646ad827fb5f81ee337ab8b8eb1cf77/903c1158c00e1ee9-aa/s1280x1920/e590888aa63f9580e3d71c888c8f7b51c03601bc.png"/>
+        <q-img src="https://renespoints.boardingarea.com/wp-content/uploads/2015/06/50-amazon-gift-card.png"/>
 
         <q-card-actions>
           <q-btn flat @click="redeem=true">Redeem</q-btn>
@@ -23,6 +23,34 @@
           </q-item-section>
         </q-item>
         <q-img src="https://www.paypalobjects.com/digitalassets/c/gifts/media/catalog/product/r/e/rev2_spotifygreencard_digital_1.jpg"/>
+
+        <q-card-actions>
+          <q-btn flat @click="redeem=true">Redeem</q-btn>
+        </q-card-actions>
+      </q-card>
+
+      <q-card class="my-card">
+        <q-item>
+          <q-item-section>
+            <q-item-label>Walmart Gift Card</q-item-label>
+            <q-item-label caption>$100</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-img src="https://marketingcdn.giftcardgranny.com/merchant-images/lg/walmart-gift-card.png"/>
+
+        <q-card-actions>
+          <q-btn flat @click="redeem=true">Redeem</q-btn>
+        </q-card-actions>
+      </q-card>
+
+      <q-card class="my-card">
+        <q-item>
+          <q-item-section>
+            <q-item-label>Starbucks Gift Card</q-item-label>
+            <q-item-label caption>$15</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-img src="https://www.ngc-group.com/uploads/media_resized/211_card_img_SBUX2017.jpg"/>
 
         <q-card-actions>
           <q-btn flat @click="redeem=true">Redeem</q-btn>
