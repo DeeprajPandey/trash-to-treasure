@@ -1,0 +1,8 @@
+.DS_Store
+
+# Vim file artifacts
+.*.sw*
+
+# Dependencies and config
+node_modules
+config.js
