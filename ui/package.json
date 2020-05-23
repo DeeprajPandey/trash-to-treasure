@@ -1,0 +1,30 @@
+{
+  "name": "ui",
+  "version": "0.0.1",
+  "description": "An application that promotes and incentivises sustainable practices like recycling.",
+  "productName": "Trash to Treasure",
+  "cordovaId": "space.trashtotreasure.app",
+  "capacitorId": "",
+  "author": "Deepraj Pandey <15888623+DeeprajPandey@users.noreply.github.com>",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.18.1",
+    "quasar": "^1.0.0"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.0.0",
+    "strip-ansi": "^3.0.1"
+  },
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "browserslist": [
+    "last 1 version, not dead, ie >= 11"
+  ]
+}
