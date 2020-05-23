@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const session = require("express-session");
 const history = require('connect-history-api-fallback');
 const logger = require("morgan");
@@ -16,6 +17,7 @@ const collectionName = "users";
 const app = express();
 
 app.use(logger("dev"));
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
