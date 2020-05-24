@@ -30,7 +30,7 @@
           <p><strong>Leaderboard:</strong> There are other participants that you are able to view on the leaderboard. The users with the top 20 points 
           will be displayed.</p>
 
-          <p>Redeem Points: After gaining enough points, you are able to then redeem your points. 
+          <p><strong>Redeem Points:</strong> After gaining enough points, you are able to then redeem your points. 
           This can be from the wide variety of options that we have available. 
           Once a product is redeemed the points will be ducted from the total amount of points you have. 
           In order for you to redeem a product you must have an equal or greater amount of points.</p>
