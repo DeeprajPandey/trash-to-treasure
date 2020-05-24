@@ -16,11 +16,10 @@ Daily, an enormous amount of waste is generated from a household and into a regi
 
 ---
 ## How to run
-Please go to ui folder to view the README on how to run the page. The guide will tell you how to run the application.
+
 
 ---
 ## Contributions
 *Ananya Dirghangi
 *Deepraj Pandey
 *Hannah Wlasowicz
-*Tejas Shah
