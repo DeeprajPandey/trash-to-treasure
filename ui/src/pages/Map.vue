@@ -41,6 +41,7 @@
 </template>
 <script>
 import {gmapApi} from 'vue2-google-maps'
+import { axiosInstance } from 'boot/axios'
 
 export default {
   data() {
@@ -162,7 +163,41 @@ export default {
             actions: [{ icon: 'close', color: 'white' }]
           });
         } else {
-          this.update_pt(this.usr_points + 100);
+          const newpt = this.usr_points + 100;
+          // update frontend state
+          this.update_pt(newpt);
+
+          // push new point to backend
+          axiosInstance.put(`/users/${this.usr_email}`, {
+            "email": this.usr_email,
+            "name": this.usr_name,
+            "points": newpt
+          })
+          .then(response => {
+            console.log("Success");
+          })
+          .catch(err => {
+            console.log(err.response);
+            // roll back point changes because the server didn't receive
+            this.update_pt(this.usr_points - 100);
+            if (err.response.status == 401) {
+              this.$q.notify({
+                color: 'neutral',
+                position: 'top',
+                message: `Please log in to see this page.`,
+                icon: 'report_problem'
+              });
+              this.$router.push('/');
+            } else {
+              this.$q.notify({
+                color: 'negative',
+                position: 'top',
+                message: `[${err.response.status}] ${err.response.data.error}`,
+                icon: 'report_problem'
+              });
+            }
+          });
+
           this.$q.notify({
             message: '100 points added to your account for recycling.',
             color: 'primary',
