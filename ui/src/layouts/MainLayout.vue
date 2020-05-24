@@ -105,7 +105,7 @@
               <img :src="usr_img">
             </q-avatar>
             <div class="text-weight-bold">{{ usr_name }}</div>
-            <div class="text-weight-light">Points: {{ usr_points }}</div>
+            <div class="text-weight-regular">Points: {{ usr_points }}</div>
           </div>
         </q-img>
       </q-drawer>
