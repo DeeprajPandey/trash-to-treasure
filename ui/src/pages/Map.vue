@@ -162,7 +162,7 @@ export default {
             actions: [{ icon: 'close', color: 'white' }]
           });
         } else {
-          this.update_pt(100);
+          this.update_pt(this.usr_points + 100);
           this.$q.notify({
             message: '100 points added to your account for recycling.',
             color: 'primary',
