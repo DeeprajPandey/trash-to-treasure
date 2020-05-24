@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const cookieSession = require("cookie-session");
+const ession = require("express-session");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
@@ -26,13 +26,13 @@ const app = express();
 app.use(logger("dev"));
 app.use(cors());
 app.use(helmet());
-app.use(cookieSession({
-    name: 't2t-session',
-    keys: ['key1', 'key2'],
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-    secret: config.cookie.secret
-    // domain: 'trashtotreasure.space'
-}));
+// Sessions
+const options = { secret: config.cookie.secret, saveUninitialized: true, resave: true };
+app.use(session(options));
+app.use(function(req, res, next) {
+  res.locals.session = req.session;
+  next();
+});
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -70,7 +70,10 @@ const verifyRegisterCallback = (accessToken, refreshToken, user, done) => {
 };
 
 // authentication middlewares
-passport.use('register', new localStrategy(verifyRegisterCallback));
+passport.use('register', new localStrategy(
+  {passReqToCallback: true},
+  verifyRegisterCallback
+));
 
 // auth routes
 app.post('/register', (req, res, next) => {
@@ -83,7 +86,7 @@ app.post('/register', (req, res, next) => {
       res.status(400);
       res.redirect(`/?r=${info.reason}`);
     }
-  });
+  })(req, res, next);
 });
 
 // For production
