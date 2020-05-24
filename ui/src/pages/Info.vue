@@ -13,29 +13,20 @@
       </q-header>
 
       <q-page-container>
-        <q-page padding>
-          <font size = "3" align="justify">
-          <h4 class = "text-center">Trash to Treasure Guide:</h4>
-          <p>Welcome to Trash to Treasure, a way to turn your recycling into value. We will be 
-          going over how the application works and ways to earn points.</p>
+        <q-page padding class="q-pa-lg">
+          <div class="text-subtitle1">
+            <i>Get something more out of your practice of recycling.</i><br/>
 
-          <p><strong>Location:</strong> As you can see on the home page, a map is brought up with your location. 
-          In addition to that, there are several markers placed all around the map. Through the integrated use of geolocation 
-          technology, we are able to get your position. This will help us in determining if you are eligible to earn points or not. 
-          Markers are place all throughout the map. These markers represent the recycling points in which you can earn points from.</p>
+            <p>We have tried to cover most of the features here. If you have any more questions, feel free to reach out to any of us by opening an issue on our <a href="https://github.com/DeeprajPandey/trash-to-treasure" target="_blank">GitHub page</a>.</p>
 
-          <p><strong>Point system:</strong> Once you are 500 meters or 0.30 miles away from one of our recycling points, you are able to see a button appear.
-          If you click the button, you will be rewarded with 100 points for your visit to the recycling point.</p>
+            <p><strong>Location:</strong> Recycling kiosks around you are marked on the map. Blue markers are kiosks which collect glass, yellow markers collect metal, and red markers collect plastic.</p>
 
-          <p><strong>Leaderboard:</strong> There are other participants that you are able to view on the leaderboard. The users with the top 20 points 
-          will be displayed.</p>
+            <p><strong>Point system:</strong> You get 100 points for depositing something to recycle. Once you are in a 10-meter radius (32.8084 ft for those following the imperial system) of a recycling kiosk, the point system gets activated. You can tap the recycle button after depositing your waste to get 100 points in your account.<br/>If you are not close to any kiosks, tapping the button will show you your distance from the closest recycling kiosk.</p>
 
-          <p><strong>Redeem Points:</strong> After gaining enough points, you are able to then redeem your points. 
-          This can be from the wide variety of options that we have available. 
-          Once a product is redeemed the points will be ducted from the total amount of points you have. 
-          In order for you to redeem a product you must have an equal or greater amount of points.</p>
+            <p><strong>Leaderboard:</strong> People around you who are also using the app are showed on the leaderboard. Try beating them all to make it to the top.</p>
 
-        </font>
+            <p><strong>Redeem Points:</strong> You can redeem your points any time for a wide range of gift cards on the Redeem page. Currently, this feature is under development and the page has dummy information. We will inform you when the feature is up. Thank you for your patience.</p>
+          </div>
 
           <!-- place QPageScroller at end of page -->
           <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
