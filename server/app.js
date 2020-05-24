@@ -48,7 +48,7 @@ passport.deserializeUser((userInfo, done) => {
 });
 
 // setup passport callback verification for register and login
-const verifyRegisterCallback = (accessToken, refreshToken, user, done) => {
+const verifyRegisterCallback = (user, done) => {
   let email_id = user.email;
   let name = user.name;
 
@@ -71,7 +71,7 @@ const verifyRegisterCallback = (accessToken, refreshToken, user, done) => {
 
 // authentication middlewares
 passport.use('register', new localStrategy(
-  {passReqToCallback: true},
+  { passReqToCallback: true },
   verifyRegisterCallback
 ));
 
