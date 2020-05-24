@@ -120,18 +120,20 @@
 
 <script>
 import { date } from 'quasar'
-import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'MainLayout',
 
   computed: {
-    ...mapActions('user_info', [
-      'clearData'
-    ]),
-    ...mapGetters('user_info', [
-      'usr_name', 'usr_points', 'usr_img'
-    ]),
+    usr_name() {
+      return this.$store.getters['userstore/usr_name']
+    },
+    usr_points() {
+      return this.$store.getters['userstore/usr_points']
+    },
+    usr_img() {
+      return this.$store.getters['userstore/usr_img']
+    },
     todaysDate() {
       let timeStamp = Date.now()
       return date.formatDate(timeStamp, 'dddd D MMMM')
@@ -142,9 +144,13 @@ export default {
     logout(e, go) {
       e.navigate = false;
       // clear user info from state and clear the session
-      this.clearData;
+      this.clear_data();
       sessionStorage.clear();
+      localStorage.clear();
       go();
+    },
+    clear_data() {
+      this.$store.dispatch('userstore/clear_data')
     }
   },
 

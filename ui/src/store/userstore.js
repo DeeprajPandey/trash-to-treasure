@@ -7,7 +7,7 @@ const defaultState = () => {
   };
 }
 
-const state = defaultState();
+let state = defaultState();
 
 const mutations = {
   INIT(state, payload_obj) {
@@ -16,23 +16,24 @@ const mutations = {
     state.points = payload_obj.points;
     state.pic_url = payload_obj.pic_url;
   },
-  POINTS(state, payload_pts) {
+  UPDATE_POINTS(state, payload_pts) {
     state.points = payload_pts;
   },
   DELETE(state) {
-    Object.assign(state, defaultState());
+    state = defaultState();
   }
 }
 
 const actions = {
-  setData({ commit }, user_obj) {
-    commit('INIT', user_obj);
+  set_data(context, user_obj) {
+    context.commit("INIT", user_obj);
   },
-  setPoint({ commit }, points) {
-    commit('POINTS', points);
+  update_pt(context, number) {
+    console.log(`Updating points to ${number}`);
+    context.commit("UPDATE_POINTS", number);
   },
-  clearData({ commit }) {
-    commit('DELETE');
+  clear_data(context) {
+    context.commit("DELETE");
   }
 }
 
