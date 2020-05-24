@@ -5,6 +5,8 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto"); // for gravatar
+const axios = require("axios");
 const helmet = require("helmet");
 const history = require('connect-history-api-fallback');
 const logger = require("morgan");
@@ -36,8 +38,30 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// setup passport callback verification for register and login
+const verifyRegisterCallback = async (accessToken, refreshToken, user, done) => {
+  let email_id = user.email;
+  let name = user.name;
+
+  let userExists = await checkUserExists(email_id);
+
+  if(userExists) {
+    console.info(`User exists: ${email_id}`);
+    done(null, false, {reason: 'exists'});
+  } else {
+    // create email hash and request picture url
+    let hash = crypto.createHash('md5').update(email_id.toLowerCase().trim()).digest("hex");
+    user.imgurl = `https://www.gravatar.com/avatar/${hash}?d=retro`;
+
+    // receive user obj without phash and _id
+    let userObj = await registerUser(user);
+    console.info(`Added new user: ${name}, ${email_id}`);
+    done(null, userObj);
+  }
+};
+
 // authentication middlewares
-app.use('register', new localStrategy);
+app.use('register', new localStrategy(verifyRegisterCallback));
 
 // For production
 // app.use(express.static(staticRoot));
