@@ -7,7 +7,7 @@ const logger = require("morgan");
 
 const config = require("./config");
 const port = normalizePort(process.env.PORT || config.port);
-const staticRoot = "../frontend/dist/spa";
+const staticRoot = "./dist/spa";
 
 // Databse setup (MongoDB Atlas)
 const db = require("./db");
