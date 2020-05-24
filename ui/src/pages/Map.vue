@@ -102,6 +102,15 @@ export default {
   },
 
   computed: {
+    usr_email() {
+      return this.$store.getters['userstore/usr_email'];
+    },
+    usr_name() {
+      return this.$store.getters['userstore/usr_name'];
+    },
+    usr_points() {
+      return this.$store.getters['userstore/usr_points'];
+    },
     mapCoordinates() {
       if(!this.map) {
         return {
@@ -115,7 +124,7 @@ export default {
       }
     }
   },
-  
+
   methods: {
     addPoints() {
       if(this.map) {
@@ -142,12 +151,19 @@ export default {
           }
         }
         if (closeToNone) {
-          alert("You aren't near any recycling kiosks.");
+          this.$q.notify({
+            message: "You aren't near any recycling kiosks.",
+            color: 'neutral',
+            timeout: 500,
+            icon: 'info',
+            actions: [{ icon: 'close', color: 'white' }]
+          });
         } else {
           this.$q.notify({
             message: '100 points added to your account for recycling.',
-            color: 'primary'
-          })
+            color: 'primary',
+            timeout: 500
+          });
         }
       }
     },
