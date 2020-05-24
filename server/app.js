@@ -27,31 +27,35 @@ const app = express();
 app.use(logger("dev"));
 app.use(cors());
 app.use(helmet());
+app.use(express.static(staticRoot)); // For production
 // Sessions
 const options = { secret: config.cookie.secret, saveUninitialized: true, resave: true };
 app.use(session(options));
-app.use(function(req, res, next) {
-  res.locals.session = req.session;
-  next();
-});
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
-// passport serialize and de-serialize methods
-passport.serializeUser((userInfo, done) => {
-  done(null, userInfo);
+passport.serializeUser(function(user, done) {
+  console.log('serialize');
+  console.log(user);
+  done(null, user);
 });
 
-passport.deserializeUser((userInfo, done) => {
-  done(null, userInfo);
+passport.deserializeUser(function(user, done) {
+  console.log('deserialize');
+  done(null, user);
 });
 
 // setup passport callback verification for register and login
-const verifyRegisterCallback = (user, done) => {
-  let email_id = user.email;
-  let name = user.name;
+// authentication middlewares
+passport.use('register-strategy', new localStrategy(
+  { usernameField: 'email', passwordField: 'phash', passReqToCallback: true },
+  (req, email, phash, done) => {
+  let userInp = req.body;
+  console.log(`in callback ${userInp}`);
+  let email_id = userInp.email;
+  let name = userInp.name;
 
   let userExists = checkUserExists(email_id);
 
@@ -61,24 +65,19 @@ const verifyRegisterCallback = (user, done) => {
   } else {
     // create email hash and request picture url
     let hash = crypto.createHash('md5').update(email_id.toLowerCase().trim()).digest("hex");
-    user.imgurl = `https://www.gravatar.com/avatar/${hash}?d=retro`;
-
+    userInp.imgurl = `https://www.gravatar.com/avatar/${hash}?d=retro`;
+    console.log(`BEFORE DATABASE ${userInp}`);
     // receive user obj without phash and _id
-    let userObj = registerUser(user);
+    let user = registerUser(userInp);
     console.info(`Added new user: ${name}, ${email_id}`);
-    done(null, userObj);
+    done(null, user);
   }
-};
-
-// authentication middlewares
-passport.use('register', new localStrategy(
-  { passReqToCallback: true },
-  verifyRegisterCallback
+}
 ));
 
 // auth routes
 app.post('/register', (req, res, next) => {
-  passport.authenticate(register, (err, userObj, info) => {
+  passport.authenticate('register-strategy', (err, userObj, info) => {
     if(err) {
       return next(err);
     }
@@ -93,6 +92,7 @@ app.post('/register', (req, res, next) => {
       if(err) {
         return next(err);
       }
+      console.log('inside req.login');
 
       // on successful login (after register)
       // redirect to /app?u=email so frontend can request for other info
@@ -105,14 +105,13 @@ app.post('/register', (req, res, next) => {
   })(req, res, next);
 });
 
-// For production
-// app.use(express.static(staticRoot));
-// app.use(history({
-//   index: '/'
-// }));
-// app.get("/", (req, res, next) => {
-//     res.sendFile("index.html", { root: staticRoot });
-// });
+// For Production
+app.use(history({
+  index: '/'
+}));
+app.get("/", (req, res, next) => {
+    res.sendFile("index.html", { root: staticRoot });
+});
 
 // 
 
