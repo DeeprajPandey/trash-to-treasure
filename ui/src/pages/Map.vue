@@ -76,6 +76,7 @@ export default {
       zoom: 12
     }
   },
+
   created() {
     // does the user have a saved center? use it instead of the default
     if(localStorage.center) {
@@ -94,10 +95,27 @@ export default {
       this.zoom = parseInt(localStorage.zoom);
     }
   },
+
   mounted() {
     // add the map to a data object
     this.$refs.mapRef.$mapPromise.then(map => this.map = map);
   },
+
+  computed: {
+    mapCoordinates() {
+      if(!this.map) {
+        return {
+          lat: 0,
+          lng: 0
+        };
+      }
+      return {
+        lat: this.map.getCenter().lat().toFixed(4),
+        lng: this.map.getCenter().lng().toFixed(4)
+      }
+    }
+  },
+  
   methods: {
     addPoints() {
       if(this.map) {
@@ -148,20 +166,6 @@ export default {
         })
         .catch(error => alert(error));
     }
-  },
-  computed: {
-      mapCoordinates() {
-        if(!this.map) {
-          return {
-            lat: 0,
-            lng: 0
-          };
-        }
-        return {
-          lat: this.map.getCenter().lat().toFixed(4),
-          lng: this.map.getCenter().lng().toFixed(4)
-        }
-      }
   }
 }
 </script>
