@@ -69,7 +69,7 @@ export default {
           url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
         },
         4: {
-          pos: {lat:28.9434277,lng:77.0911943},
+          pos: {lat:28.9473277,lng:77.1021563},
           url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
         }
       },
@@ -162,6 +162,7 @@ export default {
             actions: [{ icon: 'close', color: 'white' }]
           });
         } else {
+          this.update_pt(100);
           this.$q.notify({
             message: '100 points added to your account for recycling.',
             color: 'primary',
