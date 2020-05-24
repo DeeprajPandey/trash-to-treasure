@@ -15,7 +15,7 @@ Please go to ui folder to view the README on how to run the page. The guide will
 
 ---
 ## Contributions
--Ananya Dirghangi
--Deepraj Pandey
--Hannah Wlasowicz
--Tejas Shah
+*Ananya Dirghangi
+*Deepraj Pandey
+*Hannah Wlasowicz
+*Tejas Shah
