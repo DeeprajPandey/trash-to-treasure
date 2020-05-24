@@ -1,7 +1,30 @@
 const MongoClient = require("mongodb").MongoClient;
+const mongoose = require('mongoose');
 
 const config = require("./config");
 const dbConnectionUrl = config.db.connection_url;
+
+const UserSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String
+  },
+  points: {
+    type: Number,
+    default: 0
+  },
+  phash: {
+    type: String
+  },
+  imgurl: {
+    type: String
+  }
+}, { collection: 'users'});
+
+const User = mongoose.model("User", UserSchema);
 
 function initialize(
     dbName,
@@ -24,5 +47,6 @@ function initialize(
 }
 
 module.exports = {
-    initialize
+    initialize,
+    User
 };
