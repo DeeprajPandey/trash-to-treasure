@@ -116,146 +116,146 @@ app.get("/", (req, res, next) => {
     res.sendFile("index.html", { root: staticRoot });
 });
 
-// Database Routes
-// Add a new user [CREATE]
-app.post("/users", async (request, response) => {
-  const newUser = new User(request.body);
+// // Database Routes
+// // Add a new user [CREATE]
+// app.post("/users", async (request, response) => {
+//   const newUser = new User(request.body);
 
-  try {
-    await newUser.save();
-    response.send(newUser);
-  } catch (err) {
-    response.status(500).send(err);
-  }
-});
-
-// Read all users [READ ALL]
-app.get("/users", async (request, response) => {
-  const allUsers = await User.find({}, '_id name points');
-
-  try {
-    response.json(allUsers);
-  } catch (err) {
-    response.status(500).send(err);
-  }
-});
-
-// Read a single user data [READ ONE]
-app.get("/users/:email", async (request, response) => {
-  const userEmail = request.params.email;
-  const usr = await User.findOne({ email: userEmail }, 'name email points');
-
-  try {
-    response.json(usr);
-  } catch (err) {
-    response.status(500).send(err);
-  }
-});
-
-// Update a user data [UPDATE]
-app.put("/users/:email", (request, response) => {
-  const userEmail = request.params.email;
-  const user = request.body;
-  console.log("Editing user: ", userEmail, " to be ", user);
-
-  const res = User.updateOne({ email: userEmail }, { $set: user });
-  // no of docs matched
-  if(res.n > 0) {
-    try {
-      response.json({"msg": "success"});
-    } catch (err) {
-      response.status(500).send(err);
-    }
-  }
-});
-
-// db.initialize(dbName, collectionName, function(dbCollection) { // successCallback
-  
-//   // auth helpers
-//   function checkUserExists(email_id) {
-//     return dbCollection.countDocuments({ email: email_id }, { limit: 1 }) > 0;
+//   try {
+//     await newUser.save();
+//     response.send(newUser);
+//   } catch (err) {
+//     response.status(500).send(err);
 //   }
-
-//   function registerUser(user) {
-//     // password is still plaintext, change it
-//     bcrypt.hash(user.plaintext, saltRounds, function(err, hash) {
-//       // add the password hash and remove plaintext
-//       user.phash = hash;
-//       delete user.plaintext;
-//       // initialise points field
-//       user.points = 0;
-
-//       // add new user to database
-//       dbCollection.insertOne(user, (error, result) => { // callback of insertOne
-//         if (error) throw error;
-//       });
-
-//       // have to return new user data after registering
-//       dbCollection.findOne({ email: userEmail }, { _id: 0, phash: 0 }, (error, result) => {
-//         if (error) throw error;
-//         return result;
-//       });
-//     });
-//   }
-
-//   // get all items
-//   dbCollection.find().toArray(function(err, result) {
-//     if (err) throw err;
-//     console.log(result);
-//   });
-
-//   // Add a new user [CREATE]
-//   app.post("/users", (request, response) => {
-//     const newUser = request.body;
-//     dbCollection.insertOne(newUser, (error, result) => { // callback of insertOne
-//       if (error) throw error;
-//       // return updated list
-//       dbCollection.find().toArray((_error, _result) => { // callback of find
-//         if (_error) throw _error;
-//         response.json(_result);
-//       });
-//     });
-//   });
-
-//   // Read all users [READ ALL]
-//   app.get("/users", (request, response) => {
-//     // return updated list
-//     dbCollection.find({}, {email: 0, phash: 0}).toArray((error, result) => {
-//       if (error) throw error;
-//       response.json(result);
-//     });
-//   });
-
-//   // Read a single user data [READ ONE]
-//   app.get("/users/:email", (request, response) => {
-//     const userEmail = request.params.email;
-
-//     dbCollection.findOne({ email: userEmail }, (error, result) => {
-//       if (error) throw error;
-//       // return user
-//       response.json(result);
-//     });
-//   });
-
-  // // Update a user data [UPDATE]
-  // app.put("/users/:email", (request, response) => {
-  //   const userEmail = request.params.email;
-  //   const user = request.body;
-  //   console.log("Editing user: ", userEmail, " to be ", user);
-
-  //   dbCollection.updateOne({ email: userEmail }, { $set: user }, (error, result) => {
-  //     if (error) throw error;
-  //     // send back entire updated list, to make sure frontend data is up-to-date
-  //     dbCollection.find().toArray(function(_error, _result) {
-  //       if (_error) throw _error;
-  //       response.json(_result);
-  //     });
-  //   });
-  // });
-
-// }, function(err) { // failureCallback
-//     throw (err);
 // });
+
+// // Read all users [READ ALL]
+// app.get("/users", async (request, response) => {
+//   const allUsers = await User.find({}, '_id name points');
+
+//   try {
+//     response.json(allUsers);
+//   } catch (err) {
+//     response.status(500).send(err);
+//   }
+// });
+
+// // Read a single user data [READ ONE]
+// app.get("/users/:email", async (request, response) => {
+//   const userEmail = request.params.email;
+//   const usr = await User.findOne({ email: userEmail }, 'name email points');
+
+//   try {
+//     response.json(usr);
+//   } catch (err) {
+//     response.status(500).send(err);
+//   }
+// });
+
+// // Update a user data [UPDATE]
+// app.put("/users/:email", (request, response) => {
+//   const userEmail = request.params.email;
+//   const user = request.body;
+//   console.log("Editing user: ", userEmail, " to be ", user);
+
+//   const res = User.updateOne({ email: userEmail }, { $set: user });
+//   // no of docs matched
+//   if(res.n > 0) {
+//     try {
+//       response.json({"msg": "success"});
+//     } catch (err) {
+//       response.status(500).send(err);
+//     }
+//   }
+// });
+
+db.initialize(dbName, collectionName, function(dbCollection) { // successCallback
+  
+  // auth helpers
+  function checkUserExists(email_id) {
+    return dbCollection.countDocuments({ email: email_id }, { limit: 1 }) > 0;
+  }
+
+  function registerUser(user) {
+    // password is still plaintext, change it
+    bcrypt.hash(user.plaintext, saltRounds, function(err, hash) {
+      // add the password hash and remove plaintext
+      user.phash = hash;
+      delete user.plaintext;
+      // initialise points field
+      user.points = 0;
+
+      // add new user to database
+      dbCollection.insertOne(user, (error, result) => { // callback of insertOne
+        if (error) throw error;
+      });
+
+      // have to return new user data after registering
+      dbCollection.findOne({ email: userEmail }, { _id: 0, phash: 0 }, (error, result) => {
+        if (error) throw error;
+        return result;
+      });
+    });
+  }
+
+  // get all items
+  dbCollection.find().toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result);
+  });
+
+  // Add a new user [CREATE]
+  app.post("/users", (request, response) => {
+    const newUser = request.body;
+    dbCollection.insertOne(newUser, (error, result) => { // callback of insertOne
+      if (error) throw error;
+      // return updated list
+      dbCollection.find().toArray((_error, _result) => { // callback of find
+        if (_error) throw _error;
+        response.json(_result);
+      });
+    });
+  });
+
+  // Read all users [READ ALL]
+  app.get("/users", (request, response) => {
+    // return updated list
+    dbCollection.find({}, {email: 0, phash: 0}).toArray((error, result) => {
+      if (error) throw error;
+      response.json(result);
+    });
+  });
+
+  // Read a single user data [READ ONE]
+  app.get("/users/:email", (request, response) => {
+    const userEmail = request.params.email;
+
+    dbCollection.findOne({ email: userEmail }, (error, result) => {
+      if (error) throw error;
+      // return user
+      response.json(result);
+    });
+  });
+
+  // Update a user data [UPDATE]
+  app.put("/users/:email", (request, response) => {
+    const userEmail = request.params.email;
+    const user = request.body;
+    console.log("Editing user: ", userEmail, " to be ", user);
+
+    dbCollection.updateOne({ email: userEmail }, { $set: user }, (error, result) => {
+      if (error) throw error;
+      // send back entire updated list, to make sure frontend data is up-to-date
+      dbCollection.find().toArray(function(_error, _result) {
+        if (_error) throw _error;
+        response.json(_result);
+      });
+    });
+  });
+
+}, function(err) { // failureCallback
+    throw (err);
+});
 
 app.listen(port, "0.0.0.0");
 console.info(`Listening on ${port}...`);
