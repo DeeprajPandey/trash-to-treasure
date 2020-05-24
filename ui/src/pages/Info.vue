@@ -4,7 +4,7 @@
       <q-header elevated>
         <q-toolbar>
           <q-avatar>
-            <img src="statics/icons/trash_to_treasure.png">
+            <img src="statics/icons/small_t.png">
           </q-avatar>
           <q-toolbar-title>
             A Guide to Turn Your Trash to Treasure
