@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const ession = require("express-session");
+const session = require("express-session");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
@@ -9,6 +9,7 @@ const crypto = require("crypto"); // for gravatar
 const axios = require("axios");
 const helmet = require("helmet");
 const history = require('connect-history-api-fallback');
+const queryString = require('query-string');
 const logger = require("morgan");
 
 const config = require("./config");
@@ -81,11 +82,26 @@ app.post('/register', (req, res, next) => {
     if(err) {
       return next(err);
     }
-    if(!userObj) { // when user exists
+
+    if(!userObj) { // when user has already registered
       // redirect with query param "exists" and ask to log in
       res.status(400);
       res.redirect(`/?r=${info.reason}`);
     }
+
+    req.logIn(userObj, function(err) {
+      if(err) {
+        return next(err);
+      }
+
+      // on successful login (after register)
+      // redirect to /app?u=email so frontend can request for other info
+      let urlParams = {
+        u: userObj.email
+      };
+      let stringifiedParams = queryString.stringify(urlParams);
+      return res.redirect(`/app?${stringifiedParams}`);
+    });
   })(req, res, next);
 });
 
