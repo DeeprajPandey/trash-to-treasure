@@ -61,7 +61,7 @@ const verifyRegisterCallback = async (accessToken, refreshToken, user, done) => 
 };
 
 // authentication middlewares
-app.use('register', new localStrategy(verifyRegisterCallback));
+passport.use('register', new localStrategy(verifyRegisterCallback));
 
 // For production
 // app.use(express.static(staticRoot));
