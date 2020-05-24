@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <div class="q-pa-md row items-start q-gutter-lg">
+    <div class="q-pa-md row justify-center items-start q-gutter-lg">
       <q-card class="my-card">
         <q-item>
           <q-item-section>
