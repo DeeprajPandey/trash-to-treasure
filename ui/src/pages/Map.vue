@@ -126,6 +126,9 @@ export default {
   },
 
   methods: {
+    update_pt(number) {
+      this.$store.dispatch('userstore/update_pt', number);
+    },
     addPoints() {
       if(this.map) {
         let closeToNone = true;
