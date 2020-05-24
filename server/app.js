@@ -38,12 +38,21 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// passport serialize and de-serialize methods
+passport.serializeUser((userInfo, done) => {
+  done(null, userInfo);
+});
+
+passport.deserializeUser((userInfo, done) => {
+  done(null, userInfo);
+});
+
 // setup passport callback verification for register and login
-const verifyRegisterCallback = async (accessToken, refreshToken, user, done) => {
+const verifyRegisterCallback = (accessToken, refreshToken, user, done) => {
   let email_id = user.email;
   let name = user.name;
 
-  let userExists = await checkUserExists(email_id);
+  let userExists = checkUserExists(email_id);
 
   if(userExists) {
     console.info(`User exists: ${email_id}`);
@@ -54,7 +63,7 @@ const verifyRegisterCallback = async (accessToken, refreshToken, user, done) => 
     user.imgurl = `https://www.gravatar.com/avatar/${hash}?d=retro`;
 
     // receive user obj without phash and _id
-    let userObj = await registerUser(user);
+    let userObj = registerUser(user);
     console.info(`Added new user: ${name}, ${email_id}`);
     done(null, userObj);
   }
@@ -62,6 +71,20 @@ const verifyRegisterCallback = async (accessToken, refreshToken, user, done) => 
 
 // authentication middlewares
 passport.use('register', new localStrategy(verifyRegisterCallback));
+
+// auth routes
+app.post('/register', (req, res, next) => {
+  passport.authenticate(register, (err, userObj, info) => {
+    if(err) {
+      return next(err);
+    }
+    if(!userObj) { // when user exists
+      // redirect with query param "exists" and ask to log in
+      res.status(400);
+      res.redirect(`/?r=${info.reason}`);
+    }
+  });
+});
 
 // For production
 // app.use(express.static(staticRoot));
@@ -75,6 +98,34 @@ passport.use('register', new localStrategy(verifyRegisterCallback));
 // 
 
 db.initialize(dbName, collectionName, function(dbCollection) { // successCallback
+  
+  // auth helpers
+  function checkUserExists(email_id) {
+    return dbCollection.countDocuments({ email: email_id }, { limit: 1 }) > 0;
+  }
+
+  function registerUser(user) {
+    // password is still plaintext, change it
+    bcrypt.hash(user.plaintext, saltRounds, function(err, hash) {
+      // add the password hash and remove plaintext
+      user.phash = hash;
+      delete user.plaintext;
+      // initialise points field
+      user.points = 0;
+
+      // add new user to database
+      dbCollection.insertOne(user, (error, result) => { // callback of insertOne
+        if (error) throw error;
+      });
+
+      // have to return new user data after registering
+      dbCollection.findOne({ email: userEmail }, { _id: 0, phash: 0 }, (error, result) => {
+        if (error) throw error;
+        return result;
+      });
+    });
+  }
+
   // get all items
   dbCollection.find().toArray(function(err, result) {
     if (err) throw err;
@@ -97,7 +148,7 @@ db.initialize(dbName, collectionName, function(dbCollection) { // successCallbac
   // Read all users [READ ALL]
   app.get("/users", (request, response) => {
     // return updated list
-    dbCollection.find().project({email: 0, phash: 0}).toArray((error, result) => {
+    dbCollection.find({}, {email: 0, phash: 0}).toArray((error, result) => {
       if (error) throw error;
       response.json(result);
     });
