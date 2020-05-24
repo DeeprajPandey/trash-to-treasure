@@ -1,13 +1,18 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const session = require("express-session");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const bcrypt = require("bcrypt");
+const helmet = require("helmet");
 const history = require('connect-history-api-fallback');
 const logger = require("morgan");
 
 const config = require("./config");
 const port = normalizePort(process.env.PORT || config.port);
 const staticRoot = "./dist/spa";
+const saltRounds = config.salt_rounds;
 
 // Databse setup (MongoDB Atlas)
 const db = require("./db");
@@ -18,16 +23,21 @@ const app = express();
 
 app.use(logger("dev"));
 app.use(cors());
+app.use(helmet());
+app.use(cookieSession({
+    name: 't2t-session',
+    keys: ['key1', 'key2'],
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    secret: config.cookie.secret
+    // domain: 'trashtotreasure.space'
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Sessions
-const options = { secret: config.cookie.secret, saveUninitialized: true, resave: true };
-app.use(session(options));
-app.use(function(req, res, next) {
-  res.locals.session = req.session;
-  next();
-});
+// authentication middlewares
+app.use('register', new localStrategy);
 
 // For production
 // app.use(express.static(staticRoot));
@@ -37,6 +47,8 @@ app.use(function(req, res, next) {
 // app.get("/", (req, res, next) => {
 //     res.sendFile("index.html", { root: staticRoot });
 // });
+
+// 
 
 db.initialize(dbName, collectionName, function(dbCollection) { // successCallback
   // get all items
