@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const session = require("express-session");
 const history = require('connect-history-api-fallback');
 const logger = require("morgan");
@@ -16,6 +17,7 @@ const collectionName = "users";
 const app = express();
 
 app.use(logger("dev"));
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -59,7 +61,7 @@ db.initialize(dbName, collectionName, function(dbCollection) { // successCallbac
   // Read all users [READ ALL]
   app.get("/users", (request, response) => {
     // return updated list
-    dbCollection.find().toArray((error, result) => {
+    dbCollection.find().project({email: 0, phash: 0}).toArray((error, result) => {
       if (error) throw error;
       response.json(result);
     });

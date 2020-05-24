@@ -2,6 +2,8 @@
 
 An application that promotes and incentivises sustainable practices like recycling.
 
+---
+
 ## Install the dependencies
 ```bash
 npm install
