@@ -130,20 +130,20 @@ app.post("/users", async (request, response) => {
 });
 
 // Read all users [READ ALL]
-  app.get("/users", async (request, response) => {
-    const allUsers = await User.find({}, '_id name points');
+app.get("/users", async (request, response) => {
+  const allUsers = await User.find({}, '_id name points');
 
-    try {
-      response.json(allUsers);
-    } catch (err) {
-      response.status(500).send(err);
-    }
-  });
+  try {
+    response.json(allUsers);
+  } catch (err) {
+    response.status(500).send(err);
+  }
+});
 
 // Read a single user data [READ ONE]
 app.get("/users/:email", async (request, response) => {
   const userEmail = request.params.email;
-  const usr = await User.findOne({ email: userEmail });
+  const usr = await User.findOne({ email: userEmail }, 'name email points');
 
   try {
     response.json(usr);
