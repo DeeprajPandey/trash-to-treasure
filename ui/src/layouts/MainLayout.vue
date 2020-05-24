@@ -120,11 +120,23 @@
 
 <script>
 import { date } from 'quasar'
+import { axiosInstance } from 'boot/axios'
 
 export default {
   name: 'MainLayout',
 
+  created() {
+    if(this.usr_email) {
+      this.loadData(this.usr_email);
+    } else {
+      this.loadData("fnm@mit.edu");
+    }
+  },
+
   computed: {
+    usr_email() {
+      return this.$store.getters['userstore/usr_email']
+    },
     usr_name() {
       return this.$store.getters['userstore/usr_name']
     },
@@ -141,6 +153,15 @@ export default {
   },
 
   methods: {
+    loadData(email) {
+      axiosInstance.post(`/users/${encodeURI(email)}`)
+      .then(response => {
+        this.set_data(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    },
     logout(e, go) {
       e.navigate = false;
       // clear user info from state and clear the session
@@ -148,6 +169,9 @@ export default {
       sessionStorage.clear();
       localStorage.clear();
       go();
+    },
+    set_data(usrObj) {
+      this.$store.dispatch('userstore/clear_data', usrObj)
     },
     clear_data() {
       this.$store.dispatch('userstore/clear_data')

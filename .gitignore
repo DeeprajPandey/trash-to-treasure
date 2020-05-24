@@ -9,7 +9,7 @@ config.js
 
 # Quasar core related directories
 .quasar
-/dist
+dist
 
 # Cordova related directories and files
 /src-cordova/node_modules

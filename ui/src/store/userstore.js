@@ -14,7 +14,7 @@ const mutations = {
     state.email = payload_obj.email;
     state.name = payload_obj.name;
     state.points = payload_obj.points;
-    state.pic_url = payload_obj.pic_url;
+    state.pic_url = payload_obj.imgurl;
   },
   UPDATE_POINTS(state, payload_pts) {
     state.points = payload_pts;
